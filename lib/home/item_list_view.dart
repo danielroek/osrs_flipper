@@ -37,9 +37,7 @@ class _ItemListViewState extends State<ItemListView> {
 
   List<Widget> _buildItems(HasDataState state) {
     return List<Widget>.of(() sync* {
-      print(state.items.length);
       for (final FlipItem item in state.items) {
-        print('building');
         yield Card(
           child: ListTile(
             trailing: IconButton(icon: Icon(Icons.bookmark), onPressed:  () {
