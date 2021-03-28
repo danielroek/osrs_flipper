@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:osrs_flipper/bookmarks/bookmark_item_list_view.dart';
 import 'package:osrs_flipper/data_bloc/model/filter_options.dart';
 import 'package:osrs_flipper/home/item_list_view.dart';
 import 'package:osrs_flipper/widgets/o_f_scaffold.dart';
 
-class HomeView extends StatefulWidget {
-  HomeView({Key? key}) : super(key: key);
+class BookmarksView extends StatefulWidget {
+  BookmarksView({Key? key}) : super(key: key);
 
   @override
-  _HomeViewState createState() => _HomeViewState();
+  _BookmarksViewState createState() => _BookmarksViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _BookmarksViewState extends State<BookmarksView> {
   @override
   Widget build(BuildContext context) {
     return OFScaffold(
@@ -20,7 +21,7 @@ class _HomeViewState extends State<HomeView> {
         onPressed: () {
           _showFilterModal(context);
         }, ),
-      body: ItemListView(),
+      body: BookmarkItemListView(),
     );
   }
 
@@ -28,7 +29,7 @@ class _HomeViewState extends State<HomeView> {
     showModalBottomSheet<FilterOptions>(
         context: context,
         builder: (context) {
-            return Container();
+          return Container();
         });
   }
 }

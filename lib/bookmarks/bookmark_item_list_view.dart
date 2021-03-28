@@ -6,14 +6,14 @@ import 'package:osrs_flipper/bookmarks/bookmark_bloc.dart';
 import 'package:osrs_flipper/data_bloc/data_bloc.dart';
 import 'package:osrs_flipper/data_bloc/model/flip_item.dart';
 
-class ItemListView extends StatefulWidget {
-  ItemListView({Key? key}) : super(key: key);
+class BookmarkItemListView extends StatefulWidget {
+  BookmarkItemListView({Key? key}) : super(key: key);
 
   @override
-  _ItemListViewState createState() => _ItemListViewState();
+  _BookmarkItemListViewState createState() => _BookmarkItemListViewState();
 }
 
-class _ItemListViewState extends State<ItemListView> {
+class _BookmarkItemListViewState extends State<BookmarkItemListView> {
   @override
   void initState() {
     super.initState();
@@ -21,10 +21,10 @@ class _ItemListViewState extends State<ItemListView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DataBloc, DataState>(
-      bloc: BlocProvider.of<DataBloc>(context),
+    return BlocBuilder<BookmarkBloc, BookmarkState>(
+      bloc: BlocProvider.of<BookmarkBloc>(context),
       builder: (context, state) {
-        if (state is HasDataState) {
+        if (state is BookmarkListState) {
           return ListView(
             children: _buildItems(state),
           );
@@ -35,18 +35,18 @@ class _ItemListViewState extends State<ItemListView> {
     );
   }
 
-  List<Widget> _buildItems(HasDataState state) {
+  List<Widget> _buildItems(BookmarkListState state) {
     return List<Widget>.of(() sync* {
       for (final FlipItem item in state.items) {
         yield Card(
           child: ListTile(
-            trailing: IconButton(
-              icon: Icon(Icons.bookmark),
-              onPressed: () {
-                BookmarkBloc bmc = BlocProvider.of<BookmarkBloc>(context);
-                bmc.add(AddBookmark(item.id, item));
-              },
-            ),
+            // trailing: IconButton(
+            //   icon: Icon(Icons.bookmark),
+            //   onPressed: () {
+            //     BookmarkBloc bmc = BlocProvider.of<BookmarkBloc>(context);
+            //     bmc.add(AddBookmark(item.id, item));
+            //   },
+            // ),
             leading: Image(
                 image: CachedNetworkImageProvider(
                     'https://www.osrsbox.com/osrsbox-db/items-icons/${item.id}.png')),
