@@ -29,6 +29,7 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
   Stream<BookmarkState> _handleAddBookmark(AddBookmark event) async* {
     bookmarks.add(event.savedItem);
     await _store.write(bookmarkKey, bookmarks);
+    await _store.save();
     yield BookmarkListState(bookmarks);
   }
 

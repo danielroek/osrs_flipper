@@ -32,7 +32,7 @@ class DataBloc extends Bloc<DataEvent, DataState> {
 
     Response response = await dio.get('/items-summary.json');
     await box.write('names', response.data);
-
+    await box.save();
     return response.data;
   }
 
@@ -86,6 +86,8 @@ class DataBloc extends Bloc<DataEvent, DataState> {
   List<FlipItem> _sort(List<FlipItem> l) {
     if (this.state.sortBy == SortValue.DIFF) {
       l.removeWhere((element) => (element.high == null || element.low == null));
+      l.removeWhere((element) => (element.lowPriceVolume! < 15 || element.highPriceVolume! < 15));
+      l.removeWhere((element) => (element.low! > 150000));
       l.sort((a, b) {
         return b.diff.compareTo(a.diff);
       });
