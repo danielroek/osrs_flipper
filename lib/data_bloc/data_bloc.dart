@@ -31,12 +31,12 @@ class DataBloc extends Bloc<DataEvent, DataState> {
     this.dio.options.baseUrl = 'https://www.osrsbox.com/osrsbox-db';
 
     Response response = await dio.get('/items-summary.json');
-    await box.write('names', response.data.toString());
+    await box.write('names', response.data);
 
     return response.data;
   }
 
-  Future<Map<String, dynamic>> getItemNames({bool update = false}) async {
+  Future<Map<String, dynamic>> getItemNames({bool update = true}) async {
     final box = GetStorage();
 
     if (!box.hasData('names') || update) {
@@ -47,9 +47,10 @@ class DataBloc extends Bloc<DataEvent, DataState> {
   }
 
   Future<List<FlipItem>> getFlipItemsFromAPI() async {
+    Map<String, dynamic> itemNames = await this.getItemNames();
+
     this.dio.options.baseUrl = 'https://prices.runescape.wiki/api/v1/osrs';
 
-    Map<String, dynamic> itemNames = await this.getItemNames();
 
     List<FlipItem> l = [];
     Response response = await dio.get('/5m');
