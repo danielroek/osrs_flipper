@@ -1,0 +1,4 @@
+enum SortValue {
+  ROI,
+  DIFF,
+}
