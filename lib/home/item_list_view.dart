@@ -1,5 +1,7 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:osrs_flipper/bloc_providers.dart';
 import 'package:osrs_flipper/data_bloc/data_bloc.dart';
 import 'package:osrs_flipper/data_bloc/model/flip_item.dart';
@@ -50,8 +52,12 @@ class _ItemListViewState extends State<ItemListView> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('sell: ${item.high??0}'),
-                    Text('buy: ${item.low??0}'),
+                    Text('sell: ${NumberFormat.currency(
+                        locale: 'nl-NL', symbol: '', decimalDigits: 0)
+                        .format(item.high??0)}'),
+                    Text('buy: ${NumberFormat.currency(
+                        locale: 'nl-NL', symbol: '', decimalDigits: 0)
+                        .format(item.low??0)}'),
                     Text('LPV: ${(item.lowPriceVolume??'')}')
                   ],
                 ),
