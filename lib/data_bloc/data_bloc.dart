@@ -49,7 +49,7 @@ class DataBloc extends Bloc<DataEvent, DataState> {
   }
 
   void fetchData() {
-    Stream.periodic(Duration(seconds: 10)).listen((_) {
+    Stream.periodic(Duration(minutes: 5)).listen((_) {
       add(LoadData());
     });
   }
