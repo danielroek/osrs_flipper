@@ -62,7 +62,7 @@ class DataBloc extends Bloc<DataEvent, DataState> {
         itemNames = await this.getItemNames(update:true);
       }
 
-      FlipItem n = new FlipItem(int.parse(key),itemNames[key]['name']??'', roi:null, low: apiObj['avgLowPrice'], high: apiObj['avgHighPrice'], buyLimit:null);
+      FlipItem n = new FlipItem(int.parse(key),itemNames[key]['name']??'', roi:null, low: apiObj['avgLowPrice'], high: apiObj['avgHighPrice'], buyLimit:null, lowPriceVolume: apiObj['lowPriceVolume'], highPriceVolume:apiObj['highPriceVolume']);
 
       l.add(n);
     });

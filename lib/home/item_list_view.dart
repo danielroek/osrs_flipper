@@ -52,7 +52,7 @@ class _ItemListViewState extends State<ItemListView> {
                   children: [
                     Text('sell: ${item.high??0}'),
                     Text('buy: ${item.low??0}'),
-                    Text('buyVolume: ..')
+                    Text('LPV: ${(item.lowPriceVolume??'')}')
                   ],
                 ),
                 Column(
@@ -60,7 +60,7 @@ class _ItemListViewState extends State<ItemListView> {
                   children: [
                     Text('limit: ${item.buyLimit??0}'),
                     Text('roi: ${(item.roi??0).toStringAsFixed(2)}%'),
-                    Text('sellVolume: ..'),
+                    Text('HPV: ${(item.highPriceVolume??'')}'),
 
                   ],
                 )
