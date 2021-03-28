@@ -26,6 +26,14 @@ class DataBloc extends Bloc<DataEvent, DataState> {
     }
   }
 
+  Future<Map<String, dynamic>> updateItemNames() async {
+    this.dio.options.baseUrl = 'https://www.osrsbox.com/osrsbox-db';
+
+    Response response = await dio.get('/items-summary.json');
+
+    return response.data;
+  }
+
   Future<List<FlipItem>> getFlipItemsFromAPI () async {
     this.dio.options.baseUrl = 'https://prices.runescape.wiki/api/v1/osrs';
 
@@ -40,17 +48,30 @@ class DataBloc extends Bloc<DataEvent, DataState> {
     data.keys.forEach((key) {
       dynamic apiObj = data[key];
 
+
       FlipItem n = new FlipItem(int.parse(key),'', roi:null, low: apiObj['avgLowPrice'], high: apiObj['avgHighPrice'], buyLimit:null);
 
       l.add(n);
     });
 
-    return l;
+    return _sort(l);
   }
 
   void fetchData() {
+    add(LoadData());
     Stream.periodic(Duration(minutes: 5)).listen((_) {
       add(LoadData());
     });
+  }
+
+  List<FlipItem> _sort(List<FlipItem> l) {
+    if(this.state.sortBy == SortValue.DIFF) {
+      l.removeWhere((element) => (element.high == null || element.low == null));
+      l.sort((a,b) {
+        return b.diff.compareTo(a.diff);
+      });
+    }
+
+    return l;
   }
 }

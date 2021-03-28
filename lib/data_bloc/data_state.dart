@@ -1,6 +1,8 @@
 part of 'data_bloc.dart';
 
 abstract class DataState extends Equatable {
+  final SortValue sortBy = SortValue.DIFF;
+
   const DataState();
 }
 

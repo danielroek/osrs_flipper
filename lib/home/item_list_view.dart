@@ -59,7 +59,7 @@ class _ItemListViewState extends State<ItemListView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('limit: ${item.buyLimit??0}'),
-                    Text('roi: ${item.roi??0 * 100}%'),
+                    Text('roi: ${(item.roi??0).toStringAsFixed(2)}%'),
                     Text('sellVolume: ..'),
 
                   ],
