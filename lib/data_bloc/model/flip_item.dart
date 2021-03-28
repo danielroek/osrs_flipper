@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'flip_item.g.dart';
+
+@JsonSerializable()
 class FlipItem {
   final int id;
   late double? roi;
@@ -21,4 +26,7 @@ class FlipItem {
       this.roi = ((this.high! / this.low!) - 1) * 100;
     }
   }
+
+  factory FlipItem.fromJson(Map<String,dynamic> json) => _$FlipItemFromJson(json);
+  Map<String, dynamic> toJson() => _$FlipItemToJson(this);
 }
