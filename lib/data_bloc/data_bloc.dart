@@ -32,34 +32,34 @@ class DataBloc extends Bloc<DataEvent, DataState> {
     this.dio.options.baseUrl = 'https://www.osrsbox.com/osrsbox-db';
 
     Response response = await dio.get('/items-summary.json');
-    box.write('names', response.data.toString());
+    await box.write('names', response.data.toString());
 
     return response.data;
   }
 
-  Map<String, dynamic> getItemNames({ bool update = false }) {
+  Future<Map<String, dynamic>> getItemNames({ bool update = false }) async {
     final box = GetStorage();
 
     if(!box.hasData('names') || update) {
       this.updateItemNames();
     }
 
-    return box.read('names');
+    return await box.read('names');
   }
 
   Future<List<FlipItem>> getFlipItemsFromAPI () async {
     this.dio.options.baseUrl = 'https://prices.runescape.wiki/api/v1/osrs';
 
-    Map<String, dynamic> itemNames = this.getItemNames();
+    Map<String, dynamic> itemNames = await this.getItemNames();
 
     List<FlipItem> l = [];
     Response response = await dio.get('/5m');
 
     Map<String, dynamic> data = response.data['data'];
-    data.keys.forEach((key) {
+    data.keys.forEach((key) async {
       dynamic apiObj = data[key];
       if(itemNames[key] == null) {
-        itemNames = this.getItemNames(update:true);
+        itemNames = await this.getItemNames(update:true);
       }
 
       FlipItem n = new FlipItem(int.parse(key),itemNames[key]['name']??'', roi:null, low: apiObj['avgLowPrice'], high: apiObj['avgHighPrice'], buyLimit:null);
