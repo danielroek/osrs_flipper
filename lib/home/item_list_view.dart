@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -44,7 +45,8 @@ class _ItemListViewState extends State<ItemListView> {
                 //TODO: Bookmark item
               },
             ),
-            leading: Icon(Icons.image),
+            // leading:  (imageUrl: 'https://www.osrsbox.com/osrsbox-db/items-icons/${item.id}.png', width: 75, height: 75,),
+            leading:  Image(image: CachedNetworkImageProvider('https://www.osrsbox.com/osrsbox-db/items-icons/${item.id}.png')),
             title: Text(item.name),
             subtitle: Row(
               mainAxisSize: MainAxisSize.min,
