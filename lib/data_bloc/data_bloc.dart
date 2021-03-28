@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:osrs_flipper/data_bloc/model/flip_item.dart';
 import 'package:osrs_flipper/data_bloc/model/sort_value.dart';
 
@@ -26,30 +27,45 @@ class DataBloc extends Bloc<DataEvent, DataState> {
     }
   }
 
-  Future<Map<String, dynamic>> updateItemNames() async {
+  Future<Map<String,dynamic>> updateItemNames() async {
+    final box = GetStorage();
     this.dio.options.baseUrl = 'https://www.osrsbox.com/osrsbox-db';
 
     Response response = await dio.get('/items-summary.json');
 
+    print(response.data.toString());
+
+    box.write('names', response.data.toString());
+
     return response.data;
+  }
+
+  Map<String, dynamic> getItemNames({ bool update = false }) {
+    final box = GetStorage();
+
+    if(!box.hasData('names') || update) {
+      this.updateItemNames();
+    }
+
+    return box.read('names');
   }
 
   Future<List<FlipItem>> getFlipItemsFromAPI () async {
     this.dio.options.baseUrl = 'https://prices.runescape.wiki/api/v1/osrs';
 
+    Map<String, dynamic> itemNames = this.getItemNames();
+
     List<FlipItem> l = [];
     Response response = await dio.get('/5m');
 
     Map<String, dynamic> data = response.data['data'];
-
-    print("test");
-    print(data.keys);
-
     data.keys.forEach((key) {
       dynamic apiObj = data[key];
+      if(itemNames[key] == null) {
+        itemNames = this.getItemNames(update:true);
+      }
 
-
-      FlipItem n = new FlipItem(int.parse(key),'', roi:null, low: apiObj['avgLowPrice'], high: apiObj['avgHighPrice'], buyLimit:null);
+      FlipItem n = new FlipItem(int.parse(key),itemNames[key]['name']??'', roi:null, low: apiObj['avgLowPrice'], high: apiObj['avgHighPrice'], buyLimit:null);
 
       l.add(n);
     });
