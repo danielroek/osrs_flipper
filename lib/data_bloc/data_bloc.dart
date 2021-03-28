@@ -9,7 +9,10 @@ part 'data_event.dart';
 part 'data_state.dart';
 
 class DataBloc extends Bloc<DataEvent, DataState> {
-  DataBloc() : super(DataInitial());
+  DataBloc() : super(DataInitial()) {
+    fetchData();
+
+  }
   Dio dio = Dio();
 
   @override
@@ -29,6 +32,7 @@ class DataBloc extends Bloc<DataEvent, DataState> {
 
     Map<String, dynamic> data = response.data['data'];
 
+    print("test");
     print(data.keys);
 
     data.keys.forEach((key) {
@@ -40,5 +44,11 @@ class DataBloc extends Bloc<DataEvent, DataState> {
     });
 
     return l;
+  }
+
+  void fetchData() {
+    Stream.periodic(Duration(seconds: 10)).listen((_) {
+      add(LoadData());
+    });
   }
 }

@@ -16,9 +16,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DataBloc().getFlipItemsFromAPI();
-
-
     return MaterialApp(
       title: 'Osrs Flipper',
       theme: ThemeData(
