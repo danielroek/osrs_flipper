@@ -32,9 +32,6 @@ class DataBloc extends Bloc<DataEvent, DataState> {
     this.dio.options.baseUrl = 'https://www.osrsbox.com/osrsbox-db';
 
     Response response = await dio.get('/items-summary.json');
-
-    print(response.data.toString());
-
     box.write('names', response.data.toString());
 
     return response.data;
