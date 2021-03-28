@@ -45,8 +45,9 @@ class _ItemListViewState extends State<ItemListView> {
                 //TODO: Bookmark item
               },
             ),
-            // leading:  (imageUrl: 'https://www.osrsbox.com/osrsbox-db/items-icons/${item.id}.png', width: 75, height: 75,),
-            leading:  Image(image: CachedNetworkImageProvider('https://www.osrsbox.com/osrsbox-db/items-icons/${item.id}.png')),
+            leading: Image(
+                image: CachedNetworkImageProvider(
+                    'https://www.osrsbox.com/osrsbox-db/items-icons/${item.id}.png')),
             title: Text(item.name),
             subtitle: Row(
               mainAxisSize: MainAxisSize.min,
@@ -55,22 +56,37 @@ class _ItemListViewState extends State<ItemListView> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                        'sell: ${NumberFormat.currency(locale: 'nl-NL', symbol: '', decimalDigits: 0).format(item.high ?? 0)}'),
-                    Text(
-                        'buy: ${NumberFormat.currency(locale: 'nl-NL', symbol: '', decimalDigits: 0).format(item.low ?? 0)}'),
-                    Text(
-                        'LPV: ${NumberFormat.currency(locale: 'nl-NL', symbol: '', decimalDigits: 0).format(item.lowPriceVolume ?? 0)}')
+                    Text('sell: ${NumberFormat.currency(
+                      locale: 'nl-NL',
+                      symbol: '',
+                      decimalDigits: 0,
+                    ).format(item.high ?? 0)}'),
+                    Text('buy: ${NumberFormat.currency(
+                      locale: 'nl-NL',
+                      symbol: '',
+                      decimalDigits: 0,
+                    ).format(item.low ?? 0)}'),
+                    Text('LPV: ${NumberFormat.currency(
+                      locale: 'nl-NL',
+                      symbol: '',
+                      decimalDigits: 0,
+                    ).format(item.lowPriceVolume ?? 0)}')
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                        'limit: ${NumberFormat.currency(locale: 'nl-NL', symbol: '', decimalDigits: 0).format(item.buyLimit ?? 0)}'),
+                    Text('limit: ${NumberFormat.currency(
+                      locale: 'nl-NL',
+                      symbol: '',
+                      decimalDigits: 0,
+                    ).format(item.buyLimit ?? 0)}'),
                     Text('roi: ${(item.roi ?? 0).toStringAsFixed(2)}%'),
-                    Text(
-                        'HPV: ${NumberFormat.currency(locale: 'nl-NL', symbol: '', decimalDigits: 0).format(item.highPriceVolume ?? '')}'),
+                    Text('HPV: ${NumberFormat.currency(
+                      locale: 'nl-NL',
+                      symbol: '',
+                      decimalDigits: 0,
+                    ).format(item.highPriceVolume ?? '')}'),
                   ],
                 )
               ],
