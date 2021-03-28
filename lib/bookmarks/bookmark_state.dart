@@ -15,5 +15,5 @@ class BookmarkListState extends BookmarkState {
   BookmarkListState(this.items);
 
   @override
-  List<Object?> get props => [items];
+  List<Object?> get props => items;
 }

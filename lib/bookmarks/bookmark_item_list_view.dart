@@ -40,13 +40,12 @@ class _BookmarkItemListViewState extends State<BookmarkItemListView> {
       for (final FlipItem item in state.items) {
         yield Card(
           child: ListTile(
-            // trailing: IconButton(
-            //   icon: Icon(Icons.bookmark),
-            //   onPressed: () {
-            //     BookmarkBloc bmc = BlocProvider.of<BookmarkBloc>(context);
-            //     bmc.add(AddBookmark(item.id, item));
-            //   },
-            // ),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                BlocProvider.of<BookmarkBloc>(context).add(RemoveBookmark(item.id));
+              },
+            ),
             leading: Image(
                 image: CachedNetworkImageProvider(
                     'https://www.osrsbox.com/osrsbox-db/items-icons/${item.id}.png')),

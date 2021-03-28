@@ -22,7 +22,10 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
     BookmarkEvent event,
   ) async* {
   if (event is AddBookmark) {
-   yield* _handleAddBookmark(event);
+    yield* _handleAddBookmark(event);
+  }
+  if (event is RemoveBookmark) {
+    yield* _handleRemoveBookmark(event);
   }
   }
 
@@ -30,6 +33,17 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
     bookmarks.add(event.savedItem);
     await _store.write(bookmarkKey, bookmarks);
     await _store.save();
+    yield BookmarkListState(bookmarks);
+  }
+
+  Stream<BookmarkState> _handleRemoveBookmark(RemoveBookmark event) async* {
+    print("removing item");
+    print(event.id.toString());
+    bookmarks = this._loadBookmarks();
+    bookmarks.removeWhere((element) => element.id == event.id);
+    await _store.write(bookmarkKey, bookmarks);
+    await _store.save();
+
     yield BookmarkListState(bookmarks);
   }
 
