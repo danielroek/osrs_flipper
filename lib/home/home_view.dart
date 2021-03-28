@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:osrs_flipper/home/item_list_view.dart';
 import 'package:osrs_flipper/widgets/o_f_scaffold.dart';
 
 class HomeView extends StatefulWidget {
@@ -13,7 +14,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return OFScaffold(
-      body: Container(),
+      body: ItemListView(),
     );
 }
 }

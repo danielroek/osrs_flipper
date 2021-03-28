@@ -5,5 +5,5 @@ class FlipItem {
   final int buyLimit;
   final String name;
 
-  FlipItem(this.roi, this.low, this.high, this.buyLimit, this.name);
+  const FlipItem(this.roi, this.low, this.high, this.buyLimit, this.name);
 }

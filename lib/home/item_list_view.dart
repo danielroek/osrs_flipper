@@ -30,6 +30,7 @@ class _ItemListViewState extends State<ItemListView> {
   List<Widget> _buildItems(HasDataState state) {
     return List<Widget>.of(() sync* {
       for (final FlipItem item in state.items) {
+        debugPrint('got one');
         yield Card(
           child: ListTile(title: Text(item.name),),
         );

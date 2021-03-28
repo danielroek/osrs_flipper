@@ -12,9 +12,9 @@ class DataInitial extends DataState {
 class HasDataState extends DataState {
   final List<FlipItem> items;
 
-  HasDataState(this.items);
+  HasDataState(
+      {this.items = const [FlipItem(0.01, 100, 101, 10000, 'TestItem')]});
+
   @override
   List<Object> get props => items;
-
-
 }

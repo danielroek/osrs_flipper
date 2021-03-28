@@ -14,7 +14,7 @@ class _OFScaffoldState extends State<OFScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: OFBottomNavBar(),
-      body: SingleChildScrollView(child: widget.body),
+      body: widget.body,
     );
   }
 }
