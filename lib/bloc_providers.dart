@@ -5,8 +5,8 @@ import 'data_bloc/data_bloc.dart';
 
 class BlocProviders {
   static List<BlocProvider> get providers => [
-    BlocProvider<DataBloc>(
-      create: (BuildContext context) => DataBloc(),
-    ),
-  ];
+        BlocProvider<DataBloc>(
+          create: (BuildContext context) => DataBloc(),
+        ),
+      ];
 }

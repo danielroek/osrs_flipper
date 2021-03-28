@@ -3,6 +3,7 @@ import 'package:osrs_flipper/widgets/o_f_bottom_nav_bar.dart';
 
 class OFScaffold extends StatefulWidget {
   final Widget body;
+
   OFScaffold({Key? key, required this.body}) : super(key: key);
 
   @override

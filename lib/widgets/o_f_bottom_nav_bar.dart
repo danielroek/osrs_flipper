@@ -19,10 +19,22 @@ class _OFBottomNavBarState extends State<OFBottomNavBar> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            IconButton(icon: Icon(Icons.monetization_on_outlined), onPressed: () {},),
-            IconButton(icon: Icon(Icons.star), onPressed: () {},),
-            IconButton(icon: Icon(Icons.bookmark), onPressed: () {},),
-            IconButton(icon: Icon(Icons.settings), onPressed: () {},),
+            IconButton(
+              icon: Icon(Icons.monetization_on_outlined),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Icon(Icons.star),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Icon(Icons.bookmark),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {},
+            ),
           ],
         ),
       ],
