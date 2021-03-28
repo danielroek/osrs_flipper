@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:osrs_flipper/bloc_providers.dart';
 import 'package:osrs_flipper/data_bloc/data_bloc.dart';
 import 'package:osrs_flipper/data_bloc/model/flip_item.dart';
 
@@ -11,6 +12,13 @@ class ItemListView extends StatefulWidget {
 }
 
 class _ItemListViewState extends State<ItemListView> {
+  @override
+  void initState() {
+    BlocProvider.of<DataBloc>(context).add(LoadData());
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DataBloc, DataState>(
@@ -29,7 +37,9 @@ class _ItemListViewState extends State<ItemListView> {
 
   List<Widget> _buildItems(HasDataState state) {
     return List<Widget>.of(() sync* {
+      print(state.items.length);
       for (final FlipItem item in state.items) {
+        print('building');
         yield Card(
           child: ListTile(
             trailing: IconButton(icon: Icon(Icons.bookmark), onPressed:  () {
@@ -44,16 +54,16 @@ class _ItemListViewState extends State<ItemListView> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('sell: ${item.high!}'),
-                    Text('buy: ${item.low!}'),
+                    Text('sell: ${item.high??0}'),
+                    Text('buy: ${item.low??0}'),
                     Text('buyVolume: ..')
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('limit: ${item.buyLimit!}'),
-                    Text('roi: ${item.roi! * 100}%'),
+                    Text('limit: ${item.buyLimit??0}'),
+                    Text('roi: ${item.roi??0 * 100}%'),
                     Text('sellVolume: ..'),
 
                   ],
