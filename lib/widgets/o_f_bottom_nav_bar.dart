@@ -22,7 +22,7 @@ class _OFBottomNavBarState extends State<OFBottomNavBar> {
             IconButton(
               icon: Icon(Icons.monetization_on_outlined),
               onPressed: () {
-                Navigator.of(context).pushNamed('/home');
+                Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
               },
             ),
             IconButton(
@@ -32,7 +32,7 @@ class _OFBottomNavBarState extends State<OFBottomNavBar> {
             IconButton(
               icon: Icon(Icons.bookmark),
               onPressed: () {
-                Navigator.of(context).pushNamed('/bookmarks');
+                Navigator.of(context).pushNamedAndRemoveUntil('/bookmarks', (_) => false);
               },
             ),
             IconButton(

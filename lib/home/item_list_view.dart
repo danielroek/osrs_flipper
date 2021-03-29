@@ -72,7 +72,8 @@ class _ItemListViewState extends State<ItemListView> {
                       locale: 'nl-NL',
                       symbol: '',
                       decimalDigits: 0,
-                    ).format(item.lowPriceVolume ?? 0)}')
+                    ).format(item.lowPriceVolume ?? 0)}'),
+                    if(item.lowTime != null)Text('Low Time: ${item.lowTime!.toIso8601String()}')
                   ],
                 ),
                 Column(
@@ -88,7 +89,8 @@ class _ItemListViewState extends State<ItemListView> {
                       locale: 'nl-NL',
                       symbol: '',
                       decimalDigits: 0,
-                    ).format(item.highPriceVolume ?? '')}'),
+                    ).format(item.highPriceVolume ?? 0)}'),
+                    if(item.highTime != null)Text('High Time: ${item.highTime!.toIso8601String()}'),
                   ],
                 )
               ],

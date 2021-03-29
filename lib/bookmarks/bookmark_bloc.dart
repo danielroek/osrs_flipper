@@ -39,7 +39,6 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
   Stream<BookmarkState> _handleRemoveBookmark(RemoveBookmark event) async* {
     print("removing item");
     print(event.id.toString());
-    bookmarks = this._loadBookmarks();
     bookmarks.removeWhere((element) => element.id == event.id);
     await _store.write(bookmarkKey, bookmarks);
     await _store.save();
@@ -48,7 +47,10 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
   }
 
   List<FlipItem> _loadBookmarks() {
-    bookmarks = _store.read(bookmarkKey) ?? [];
+    bookmarks = [];
+    (_store.read(bookmarkKey) as List<dynamic>? ?? []).forEach((e) {
+      bookmarks.add(FlipItem.fromJson(e));
+    });
     return bookmarks;
   }
 }

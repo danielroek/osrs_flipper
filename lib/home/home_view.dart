@@ -11,6 +11,9 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  TextEditingController _minGpController = TextEditingController();
+  TextEditingController _maxGpController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return OFScaffold(
@@ -25,10 +28,29 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void _showFilterModal(BuildContext context) {
-    showModalBottomSheet<FilterOptions>(
+    FilterOptions filterOptions;
+    showModalBottomSheet<void>(
         context: context,
         builder: (context) {
-            return Container();
+            return Container(
+              height: 300,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('Gp value'),
+                  Row(
+                    children: [
+                      TextField(
+                        controller: _minGpController
+                      ),
+                      TextField(
+                        controller: _maxGpController
+                      )
+                    ],
+                  )
+                ],
+              )
+            );
         });
   }
 }
