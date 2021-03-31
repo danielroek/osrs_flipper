@@ -95,7 +95,7 @@ class DataBloc extends Bloc<DataEvent, DataState> {
       // l.removeWhere((element) => (element.lowPriceVolume ?? 0 < 15 || element.highPriceVolume! < 15));
       // l.removeWhere((element) => (element.low ?? 0 > 150000));
       l.sort((a, b) {
-        return b.potentialProfit.compareTo(a.potentialProfit);
+        return b.diff.compareTo(a.diff);
       });
     }
     return l;
