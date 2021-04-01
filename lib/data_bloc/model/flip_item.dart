@@ -16,10 +16,13 @@ class FlipItem {
    int? latestHigh;
    DateTime? highTime;
    String name;
+   String image;
 
   int get diff => (this.high ?? 0) - (this.low ?? 0);
+  int get potentialProfit => (this.diff * (this.buyLimit??0));
+  int get totalInvestment => ((this.low??0) * (this.buyLimit ?? 0));
 
-  FlipItem(this.id, this.name,
+  FlipItem(this.id, this.name, this.image,
       {this.roi,
       this.low,
       this.high,

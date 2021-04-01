@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,6 +41,7 @@ class _ItemListViewState extends State<ItemListView> {
   List<Widget> _buildItems(HasDataState state) {
     return List<Widget>.of(() sync* {
       for (final FlipItem item in state.items) {
+        Uint8List iconBytes = Base64Codec().decode(item.image);
         yield Card(
           child: ListTile(
             trailing: IconButton(
@@ -47,9 +51,7 @@ class _ItemListViewState extends State<ItemListView> {
                 bmc.add(AddBookmark(item.id, item));
               },
             ),
-            leading: Image(
-                image: CachedNetworkImageProvider(
-                    'https://www.osrsbox.com/osrsbox-db/items-icons/${item.id}.png')),
+            leading: Image.memory(iconBytes),
             title: Text(item.name),
             subtitle: Row(
               mainAxisSize: MainAxisSize.min,
@@ -68,11 +70,12 @@ class _ItemListViewState extends State<ItemListView> {
                       symbol: '',
                       decimalDigits: 0,
                     ).format(item.low ?? 0)}'),
-                    Text('LPV: ${NumberFormat.currency(
+                    Text('profit: ${NumberFormat.compact(
                       locale: 'nl-NL',
-                      symbol: '',
-                      decimalDigits: 0,
-                    ).format(item.lowPriceVolume ?? 0)}'),
+                    ).format(item.potentialProfit)}'),
+                    Text('invest: ${NumberFormat.compact(
+                      locale: 'nl-NL',
+                    ).format(item.totalInvestment)}'),
                     if(item.lowTime != null)Text('Low Time: ${item.lowTime!.toIso8601String()}')
                   ],
                 ),
@@ -84,12 +87,17 @@ class _ItemListViewState extends State<ItemListView> {
                       symbol: '',
                       decimalDigits: 0,
                     ).format(item.buyLimit ?? 0)}'),
-                    Text('roi: ${(item.roi ?? 0).toStringAsFixed(2)}%'),
+                    Text('LPV: ${NumberFormat.currency(
+                      locale: 'nl-NL',
+                      symbol: '',
+                      decimalDigits: 0,
+                    ).format(item.lowPriceVolume ?? 0)}'),
                     Text('HPV: ${NumberFormat.currency(
                       locale: 'nl-NL',
                       symbol: '',
                       decimalDigits: 0,
                     ).format(item.highPriceVolume ?? 0)}'),
+                    Text('roi: ${(item.roi ?? 0).toStringAsFixed(2)}%'),
                     if(item.highTime != null)Text('High Time: ${item.highTime!.toIso8601String()}'),
                   ],
                 )

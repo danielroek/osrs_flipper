@@ -17,6 +17,7 @@ class DataBloc extends Bloc<DataEvent, DataState> {
   }
 
   Dio dio = Dio();
+  final box = GetStorage();
 
   @override
   Stream<DataState> mapEventToState(
@@ -27,66 +28,63 @@ class DataBloc extends Bloc<DataEvent, DataState> {
     }
   }
 
-  Future<Map<String, dynamic>> updateItemNames() async {
-    final box = GetStorage();
-    this.dio.options.baseUrl = 'https://www.osrsbox.com/osrsbox-db';
+  Future<Map<String, dynamic>> updateFullItemInformation() async {
+    this.dio.options.baseUrl = "https://www.osrsbox.com/osrsbox-db";
 
-    Response response = await dio.get('/items-summary.json');
-    await box.write('names', response.data);
+    Response response = await dio.get('/items-complete.json');
+    await box.write('fullItemData', response.data);
     await box.save();
     return response.data;
   }
 
-  Future<Map<String, dynamic>> getItemNames({bool update = true}) async {
-    final box = GetStorage();
-
-    if (!box.hasData('names') || update) {
-      this.updateItemNames();
+  Future<Map<String, dynamic>> getFullItemInformation({bool update = false}) async {
+    if(!box.hasData('fullItemData') || update) {
+      await this.updateFullItemInformation();
     }
 
-    return await box.read('names');
+    return await box.read('fullItemData');
   }
 
   Future<List<FlipItem>> getFlipItemsFromAPI() async {
-    Map<String, dynamic> itemNames = await this.getItemNames();
-
+    Map<String, dynamic> itemInformation = await this.getFullItemInformation();
     this.dio.options.baseUrl = 'https://prices.runescape.wiki/api/v1/osrs';
 
     List<FlipItem> l = [];
     Response response = await dio.get('/5m');
 
     Map<String, dynamic> data = response.data['data'];
+
     data.keys.forEach((key) async {
       dynamic apiObj = data[key];
-      if (itemNames[key] == null) {
-        itemNames = await this.getItemNames(update: true);
+      if (itemInformation[key] == null) { // Update itemInformation if there is missing info ( Does not 100% guarantee information is present )
+        itemInformation = await this.getFullItemInformation(update: true);
       }
 
-      FlipItem n = new FlipItem(int.parse(key), itemNames[key]['name'] ?? '',
+      FlipItem n = new FlipItem(
+          int.parse(key),  // Id
+          itemInformation[key]['name'] ?? '', // Name
+          itemInformation[key]['icon'] ?? '', // Image
           roi: null,
           low: apiObj['avgLowPrice'],
           high: apiObj['avgHighPrice'],
-          buyLimit: null,
+          buyLimit: itemInformation[key]['buy_limit'] ?? 0,
           lowPriceVolume: apiObj['lowPriceVolume'],
           highPriceVolume: apiObj['highPriceVolume']);
-
       l.add(n);
     });
-    debugPrint('l size is now: ${l.length}');
-    l = await _fillMissingDataWithLatest(l);
-    debugPrint('l size is now2: ${l.length}');
+
+    l = await _fillMissingDataWithLatest(l, itemInformation);
     return _sort(l);
   }
 
   void fetchData() {
     add(LoadData());
-    Stream.periodic(Duration(seconds: 10)).listen((_) {
+    Stream.periodic(Duration(seconds: 30)).listen((_) {
       add(LoadData());
     });
   }
 
   List<FlipItem> _sort(List<FlipItem> l) {
-    debugPrint('ping');
     if (this.state.sortBy == SortValue.DIFF) {
       l.removeWhere((element) => (element.high == null || element.low == null));
       l.removeWhere((element) => (element.high ?? 0) < 1000);
@@ -100,12 +98,10 @@ class DataBloc extends Bloc<DataEvent, DataState> {
         return b.diff.compareTo(a.diff);
       });
     }
-    debugPrint('l size is now3: ${l.length}');
     return l;
   }
 
-  Future<List<FlipItem>> _fillMissingDataWithLatest(List<FlipItem> l) async {
-    Map<String, dynamic> itemNames = await this.getItemNames();
+  Future<List<FlipItem>> _fillMissingDataWithLatest(List<FlipItem> l, Map<String, dynamic> itemInformation) async {
     this.dio.options.baseUrl = 'https://prices.runescape.wiki/api/v1/osrs';
     Response response = await dio.get('/latest');
     Map<String, dynamic> data = response.data['data'];
@@ -125,7 +121,8 @@ class DataBloc extends Bloc<DataEvent, DataState> {
         l.add(
           FlipItem(
             int.parse(key),
-            itemNames[key]['name'] ?? '',
+            itemInformation[key]['name'] ?? '',
+            itemInformation[key]['icon'] ?? '', // Image
             roi: null,
             low: apiObj['low'],
             high: apiObj['high'],
